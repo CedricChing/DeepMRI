@@ -1,0 +1,35 @@
+% reconstruct sr image from corrupted image
+% @author huitao cheng
+close all; clear; clc;
+savepath = '/media/cedric/D85479155478F798/ComplexNet_MriRecon/data_img/2Dpoisson5'; 
+%% mask 1ch to 12chs
+load test_data/2Dpoisson5
+mask_12chs = repmat(mask,[1,1,12]);
+imask_12chs = ~mask_12chs;
+imask = ~mask;
+%% load raw data-complex  and mask
+addpath(genpath('test_data'));
+addpath(genpath('utilities'));
+addpath(genpath('result'));
+folder_name = 'result/';
+data_name = {'T1_1','T2_1','PD_1','T1_2','T2_2','PD_2','T1_3','T2_3','PD_3'};
+data_num = numel(data_name);
+data = zeros(192, 192, 12, 1);
+count = 0;
+for x = 1:data_num
+    load(fullfile('test_data',data_name{x}));
+    [hei,wid,cha]=size(Img);
+    %% label data
+    im_label_12chs = Img ./ max(abs(Img(:)));
+    im_label = AdaptiveCoilCombine(Img);
+    im_label = im_label ./ max(abs(im_label(:)));
+    count = count + 1;
+    data(:, :, :, count) = im_label_12chs;
+    figure,imshow(abs(im_label),[]);
+end
+data = permute(data, [2, 1, 3, 4]);
+data_real = real(data);
+data_imag = imag(data);
+data = cat(3, data_real, data_imag);
+h5create([savepath,'/test_data.h5'],'/test',[192,192,24,count]);
+h5write([savepath,'/test_data.h5'],'/test',data);
