@@ -7,13 +7,13 @@ This repository contains the implementation of DeepMRI for parallel MR imaging u
 
 **The architecture of DeepMRI for parallel MR imaging**    
 
-![The architecture of DeepMRI](/home/cedric/Pictures/figures/architecture_version5.png)  
+![The architecture of DeepMRI](figures/architecture_version5.png)  
 
 
 
 **Reconstruction Results by classical SPIRiT/L1-SPIRiT and the proposed method**    
 
-![Reconstruction](/home/cedric/Pictures/figures/1D.png)
+![Reconstruction](figures/1D.png)
 
 More results can be found in the paper.   
 
